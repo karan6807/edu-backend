@@ -14,7 +14,10 @@ app.use(cors({
     origin: [
         "http://localhost:3000",
         "http://localhost:3001",
-        "http://localhost:3002"
+        "http://localhost:3002",
+        "https://edu-user-frontend.vercel.app",                     // ✅ ADD THIS
+        "https://edu-admin-frontend-beta.vercel.app",               // ✅ ADD THIS
+        "https://edu-user-frontend-git-master-responsives-projects.vercel.app"  // ✅ ADD THIS
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -63,15 +66,15 @@ app.get('/api/health', (req, res) => {
 if (process.env.NODE_ENV === 'production') {
     // Serve admin frontend on /admin route
     app.use('/admin', express.static(path.join(__dirname, '../admin-frontend/build')));
-    
+
     // Serve user frontend (main app)
     app.use(express.static(path.join(__dirname, '../mern-auth-frontend/build')));
-    
+
     // Handle React Router for admin frontend
     app.get('/admin/*', (req, res) => {
         res.sendFile(path.join(__dirname, '../admin-frontend/build', 'index.html'));
     });
-    
+
     // Handle React Router for user frontend (catch all for non-API routes)
     app.get('*', (req, res) => {
         // Don't serve frontend for API routes
@@ -104,7 +107,7 @@ mongoose
 // 📍 ROUTES BREAKDOWN:
 // - authRoutes: /api/user/* (login, signup, basic profile)
 // - userProfileRoutes: /api/user-profile/* (extended profile data)
-// 
+//
 // Frontend will call:
 // GET /api/user-profile/profile - to get complete profile
 // PUT /api/user-profile/profile - to update complete profile
