@@ -1,3 +1,5 @@
-echo .env > .gitignore
-echo node_modules/ >> .gitignore
-echo uploads/ >> .gitignoreuploads/
+.env
+node_modules/
+uploads/
+*.log
+.DS_Store
