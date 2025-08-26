@@ -17,7 +17,8 @@ app.use(cors({
         "http://localhost:3002",
         "https://edu-user-frontend.vercel.app",
         "https://edu-admin-frontend-beta.vercel.app",
-        "https://edu-user-frontend-git-master-responsives-projects.vercel.app"
+        "https://edu-user-frontend-git-master-responsives-projects.vercel.app",
+        "https://edu-user-frontend-egp00yto5-responsives-projects.vercel.app"
     ],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
