@@ -39,6 +39,8 @@ const instructorRoutes = require('./routes/instructorRoutes');
 const instructorProfileRoutes = require('./routes/instructorProfileRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const userProfileRoutes = require('./routes/userProfileRoutes'); // ✅ NEW: Added user profile routes
+const progressRoutes = require('./routes/progressRoutes'); // ✅ NEW: Added progress routes
+const enrollmentRoutes = require('./routes/enrollmentRoutes'); // ✅ NEW: Added enrollment routes
 
 // ✅ Use Routes
 app.use("/api/user", authRoutes);
@@ -52,6 +54,8 @@ app.use('/api/instructors', instructorRoutes);
 app.use('/api/instructor-profile', instructorProfileRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/user-profile', userProfileRoutes); // ✅ NEW: User profile routes
+app.use('/api/progress', progressRoutes); // ✅ NEW: Progress routes
+app.use('/api/enrollments', enrollmentRoutes); // ✅ NEW: Enrollment routes
 
 // ✅ Error handling middleware
 app.use((err, req, res, next) => {

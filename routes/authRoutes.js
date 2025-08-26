@@ -9,7 +9,6 @@ const {
     getProfile,
 } = require("../controllers/authController");
 
-const { enrollInCourse } = require("../controllers/enrollmentController");
 const { addToCart } = require("../controllers/cartController"); // ✅ Make sure this controller exists
 const authenticate = require("../middleware/authMiddleware");
 
@@ -20,7 +19,7 @@ router.post("/login", loginUser);                  // POST /api/user/login
 router.post("/forgot-password", forgotPassword);   // POST /api/user/forgot-password
 router.post("/reset-password/:token", resetPassword); // POST /api/user/reset-password/:token
 router.get("/profile", authenticate, getProfile);  // GET /api/user/profile (protected)
-router.post("/enroll", authenticate, enrollInCourse); // POST /api/user/enroll (protected)
+// Enrollment routes moved to /api/enrollments
 router.post("/cart", authenticate, addToCart);     // ✅ POST /api/user/cart (protected)
 
 module.exports = router;

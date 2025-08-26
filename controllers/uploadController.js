@@ -1,43 +1,5 @@
-const multer = require('multer');
-const path = require('path');
-const fs = require('fs');
-
-// Ensure uploads directory exists
-const uploadsDir = path.join(__dirname, '..', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
-
-// Configure multer for file uploads
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadsDir);
-  },
-  filename: (req, file, cb) => {
-    // Generate unique filename
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    const extension = path.extname(file.originalname);
-    cb(null, file.fieldname + '-' + uniqueSuffix + extension);
-  }
-});
-
-// File filter to allow only images
-const fileFilter = (req, file, cb) => {
-  if (file.mimetype.startsWith('image/')) {
-    cb(null, true);
-  } else {
-    cb(new Error('Only image files are allowed!'), false);
-  }
-};
-
-// Configure multer
-const upload = multer({
-  storage: storage,
-  fileFilter: fileFilter,
-  limits: {
-    fileSize: 5 * 1024 * 1024 // 5MB limit
-  }
-});
+const upload = require('../multer');
+const cloudinary = require('../cloudinary');
 
 // @desc    Upload single image
 // @route   POST /api/upload
@@ -51,14 +13,14 @@ const uploadImage = async (req, res) => {
       });
     }
 
-    // Return the file path relative to uploads directory
-    const imageUrl = `/uploads/${req.file.filename}`;
+    // Cloudinary automatically uploads and returns the URL
+    const imageUrl = req.file.path; // Cloudinary URL
     
     res.status(200).json({
       success: true,
       message: 'Image uploaded successfully',
       imageUrl: imageUrl,
-      filename: req.file.filename
+      publicId: req.file.filename // Cloudinary public_id
     });
   } catch (error) {
     console.error('Error uploading image:', error);
@@ -70,15 +32,16 @@ const uploadImage = async (req, res) => {
 };
 
 // @desc    Delete image
-// @route   DELETE /api/upload/:filename
+// @route   DELETE /api/upload/:publicId
 // @access  Public
 const deleteImage = async (req, res) => {
   try {
-    const { filename } = req.params;
-    const imagePath = path.join(uploadsDir, filename);
+    const { publicId } = req.params;
     
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
+    // Delete from Cloudinary
+    const result = await cloudinary.uploader.destroy(publicId);
+    
+    if (result.result === 'ok') {
       res.status(200).json({
         success: true,
         message: 'Image deleted successfully'
@@ -110,13 +73,13 @@ const uploadMultipleImages = async (req, res) => {
       });
     }
 
-    const imageUrls = req.files.map(file => `/uploads/${file.filename}`);
+    const imageUrls = req.files.map(file => file.path); // Cloudinary URLs
     
     res.status(200).json({
       success: true,
       message: 'Images uploaded successfully',
       imageUrls: imageUrls,
-      filenames: req.files.map(file => file.filename)
+      publicIds: req.files.map(file => file.filename) // Cloudinary public_ids
     });
   } catch (error) {
     console.error('Error uploading images:', error);
