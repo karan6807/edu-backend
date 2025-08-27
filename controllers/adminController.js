@@ -103,6 +103,10 @@ exports.addCourse = async (req, res) => {
       }
     }
 
+    // Log what we're saving
+    console.log('Saving thumbnailUrl:', thumbnailFile ? thumbnailFile.path : '');
+    console.log('Saving videoUrl:', videoFile ? videoFile.path : '');
+
     const course = new Course({
       title,
       description,
@@ -115,9 +119,6 @@ exports.addCourse = async (req, res) => {
       duration,
       thumbnailUrl: thumbnailFile ? thumbnailFile.path : "",
       videoUrl: videoFile ? videoFile.path : "",
-      
-    console.log('Saving thumbnailUrl:', thumbnailFile ? thumbnailFile.path : '');
-    console.log('Saving videoUrl:', videoFile ? videoFile.path : '');
       tags: parsedTags,
       language,
       isPublished: isPublished === 'true' || isPublished === true,
