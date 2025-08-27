@@ -53,6 +53,9 @@ exports.addCourse = async (req, res) => {
     // Handle file uploads
     const thumbnailFile = req.files?.thumbnail?.[0];
     const videoFile = req.files?.videoUrl?.[0]; // Note: field name matches frontend
+    
+    console.log('Thumbnail file:', thumbnailFile);
+    console.log('Video file:', videoFile);
 
     // Validate required fields
     if (!title || !description || !category) {
@@ -112,6 +115,9 @@ exports.addCourse = async (req, res) => {
       duration,
       thumbnailUrl: thumbnailFile ? thumbnailFile.path : "",
       videoUrl: videoFile ? videoFile.path : "",
+      
+    console.log('Saving thumbnailUrl:', thumbnailFile ? thumbnailFile.path : '');
+    console.log('Saving videoUrl:', videoFile ? videoFile.path : '');
       tags: parsedTags,
       language,
       isPublished: isPublished === 'true' || isPublished === true,

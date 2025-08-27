@@ -26,6 +26,8 @@ app.use(cors({
             origin.includes('edu-admin-frontend') && origin.includes('vercel.app')
         );
         
+        console.log('CORS Origin:', origin, 'Allowed:', !origin || allowedOrigins.includes(origin) || isVercelDeployment);
+        
         if (!origin || allowedOrigins.includes(origin) || isVercelDeployment) {
             callback(null, true);
         } else {
