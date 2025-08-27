@@ -11,15 +11,27 @@ const app = express();
 
 // ✅ Middleware
 app.use(cors({
-    origin: [
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:3002",
-        "https://edu-user-frontend.vercel.app",
-        "https://edu-admin-frontend-beta.vercel.app",
-        "https://edu-user-frontend-git-master-responsives-projects.vercel.app",
-        "https://edu-user-frontend-egp00yto5-responsives-projects.vercel.app"
-    ],
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            "http://localhost:3000",
+            "http://localhost:3001",
+            "http://localhost:3002",
+            "https://edu-user-frontend.vercel.app",
+            "https://edu-admin-frontend-beta.vercel.app"
+        ];
+        
+        // Allow any Vercel deployment URL for your projects
+        const isVercelDeployment = origin && (
+            origin.includes('edu-user-frontend') && origin.includes('vercel.app') ||
+            origin.includes('edu-admin-frontend') && origin.includes('vercel.app')
+        );
+        
+        if (!origin || allowedOrigins.includes(origin) || isVercelDeployment) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
