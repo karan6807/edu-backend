@@ -36,4 +36,8 @@ router.put('/categories/:id', adminController.updateCategory);
 router.delete('/categories/:id', adminController.deleteCategory);
 router.get('/categories/tree', adminController.getCategoryTree);
 
+// User management routes
+router.get('/users', adminController.getAllUsers);
+router.delete('/users/:id', adminController.deleteUser);
+
 module.exports = router;
